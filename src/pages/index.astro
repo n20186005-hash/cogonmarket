@@ -31,7 +31,7 @@ const localBusinessSchema = {
     ratingValue: market.rating,
     reviewCount: market.reviewCount
   },
-  openingHours: "Ang gipakita nga closing time sa map mao ang 18:30; palihog i-check ang Google Maps sa dili pa mobiyahe."
+  openingHours: `Ang oras sa merkado mao ang ${market.businessHours}; palihog i-check ang Google Maps sa dili pa mobiyahe.`
 };
 
 const faqSchema = {
@@ -102,7 +102,7 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
       <aside class="hero-fact">
         <span class="stamp">Lokál nga giya</span>
         <p><strong>{market.rating} / 5</strong><br /><span>Gipakita sa Google Maps · {market.reviewCount.toLocaleString("en-US")} ka review</span></p>
-        <p><strong>Hangtod {market.closingTime}</strong><br /><span>Ang gipakita nga closing time sa map; i-check una sa pagbiyahe.</span></p>
+        <p><strong>Oras {market.businessHours}</strong><br /><span>Ang oras nga gipakita sa map; i-check una sa pagbiyahe.</span></p>
       </aside>
     </section>
 
@@ -186,7 +186,7 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
       <div class="faq-title-wrap"><p class="eyebrow">Pangutana ug tubag</p><h2 id="faq-title">Paspas nga <em>klaro.</em></h2></div>
       <div class="faq-list">
         <details open><summary>Unsa ang address sa Cogon Public Market?</summary><p>Naa kini sa Mayor J. R. Borja Avenue, Cagayan de Oro City, Misamis Oriental. Gamita ang Google Maps para sa pinakasayon nga turn-by-turn nga direksyon.</p></details>
-        <details><summary>Unsa ang oras sa merkado?</summary><p>Ang page sa Google Maps nagpakita ug closing time nga 18:30 sa dihang gi-check ang impormasyon. Mahimong mausab ang oras, mao nga i-confirm sa map sa dili pa molakaw.</p></details>
+        <details><summary>Unsa ang oras sa merkado?</summary><p>Ang page sa Google Maps nagpakita ug oras nga {market.businessHours} sa dihang gi-check ang impormasyon. Mahimong mausab ang oras, mao nga i-confirm sa map sa dili pa molakaw.</p></details>
         <details><summary>Naa bay parking?</summary><p>Ang street ug market access mahimong busy. Tan-awa ang live traffic ug parking instructions sa adlaw nga mobisita, o pili ug taxi/drop-off kung mas sayon.</p></details>
         <details><summary>Unsaon paghatag ug correction?</summary><p>Gamiton ang feedback block sa ubos ug ipadala ang sayop nga impormasyon, asa kini makita, ug ang imong source kung naa.</p></details>
       </div>

@@ -15,7 +15,7 @@ export const market = {
   telephone: "+63 88 858 8428",
   rating: "3.8",
   reviewCount: 6324,
-  closingTime: "18:30",
+  businessHours: "04:30–18:30",
   feedbackEmail: "claritleonelmnicol@gmail.com",
   mapUrl: "https://www.google.com/maps/place/Cogon+Public+Market/data=!4m7!3m6!1s0x32fff2d03e021631:0xbb1fd9c6cf6f9de!8m2!3d8.4773674!4d124.6514096!16s%2Fg%2F1tdw5l54!19sChIJMRYCPtDy_zIR3vn2bJz9sQs",
   mapEmbedUrl:
