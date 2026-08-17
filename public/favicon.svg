@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cogon Public Market">
+  <rect width="64" height="64" rx="14" fill="#F8EFD9"/>
+  <circle cx="44" cy="20" r="8" fill="#E3A620"/>
+  <path d="M13 28h38l-4 23H17l-4-23Z" fill="#A8442A"/>
+  <path d="M19 28c0-8 5-14 13-14s13 6 13 14" fill="none" stroke="#A8442A" stroke-width="5" stroke-linecap="round"/>
+  <path d="M23 35h18M22 42h20" stroke="#F8EFD9" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="24" cy="25" r="5" fill="#3A6B4A"/><circle cx="33" cy="23" r="5" fill="#3A6B4A"/>
+</svg>

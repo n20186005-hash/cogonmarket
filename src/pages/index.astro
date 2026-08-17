@@ -1,0 +1,212 @@
+---
+/**
+ * Design reminder — "Habing Merkado": the page should feel like a local
+ * market newspaper, with real images as evidence and practical routes first.
+ * Use the left information rail, hand-stamp symbols and terracotta sparingly.
+ */
+import Base from "../layouts/Base.astro";
+import { assets, market } from "../content/site";
+
+const siteUrl = Astro.site?.toString();
+const schemaId = siteUrl ? new URL("#cogon-public-market", siteUrl).href : "#cogon-public-market";
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "TouristAttraction"],
+  "@id": schemaId,
+  name: market.name,
+  description: "Usa ka lokal nga public market ug adlaw-adlaw nga shopping point sa Cagayan de Oro.",
+  url: siteUrl,
+  telephone: market.telephone,
+  address: {
+    "@type": "PostalAddress",
+    ...market.address
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: market.coordinates.latitude,
+    longitude: market.coordinates.longitude
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: market.rating,
+    reviewCount: market.reviewCount
+  },
+  openingHours: "Ang gipakita nga closing time sa map mao ang 18:30; palihog i-check ang Google Maps sa dili pa mobiyahe."
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Unsaon pag-adto sa Cogon Public Market?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Naa kini sa Mayor J. R. Borja Avenue sa Cagayan de Oro. Gamit ug Google Maps para sa pinakabag-ong ruta; duol kini sa downtown ug madangpan sa taxi, jeepney, multicab ug motorela depende sa imong giikanan."
+      }
+    },
+    {
+      "@type": "Question",
+      name: "Kanus-a ang maayo nga oras sa pagbisita?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Sayong buntag angay para sa presko nga ani, isda ug pamahaw. Tan-awa ang live nga oras sa Google Maps sa dili pa mobiyahe tungod kay mahimong mausab ang oras sa mga tindahan."
+      }
+    },
+    {
+      "@type": "Question",
+      name: "Asa ko maka-report ug sayop nga impormasyon?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "I-email ang detalye sa claritleonelmnicol@gmail.com aron ma-review ang report."
+      }
+    }
+  ]
+};
+
+const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponent("Correction for Cogon Public Market guide")}&body=${encodeURIComponent("Unsay sayop nga impormasyon?\n\nAsa sa panid makita?\n\nUnsa ang sakto o imong source?\n\nSalamat.")}`;
+---
+
+<Base title="Cogon Public Market — Sugod sa adlaw, presko ang pili" description="Usa ka praktikal nga Cebuano nga giya sa Cogon Public Market sa Cagayan de Oro: paliton, kaonon, agianan ug impormasyon sa pagbisita.">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)}></script>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+
+  <a class="skip-link" href="#main-content">Laktawi ngadto sa sulod</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Cogon Public Market — sugod sa taas">
+      <img src={assets.logo} width="58" height="58" alt="Cogon Public Market basket-and-sun mark" />
+      <span><strong>Cogon</strong><em>Public Market</em></span>
+    </a>
+    <nav aria-label="Pangunang nabigasyon">
+      <a href="#paliton">Paliton</a>
+      <a href="#pag-adto">Pag-adto</a>
+      <a href="#duol">Duol</a>
+      <a class="nav-stamp" href="#feedback">Reporta ug sayop</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section id="top" class="hero" aria-labelledby="hero-title">
+      <div class="hero-media" role="img" aria-label="Tinuod nga hulagway sa Cogon Public Market nga adunay tindera ug preskong utanon" style={`background-image: linear-gradient(90deg, rgba(34, 24, 15, .82) 0%, rgba(34, 24, 15, .53) 48%, rgba(34, 24, 15, .12) 100%), url('${assets.produce}')`}></div>
+      <div class="hero-rail" aria-hidden="true"><span>08° 28' N</span><i></i><span>124° 39' E</span></div>
+      <div class="hero-copy">
+        <p class="eyebrow">Cagayan de Oro · adlaw-adlaw nga merkado</p>
+        <h1 id="hero-title">Sugod sayo.<br /><em>Pili ug presko.</em></h1>
+        <p class="hero-intro">Sa Cogon, ang adlaw magsugod sa tingog sa merkado: prutas, isda, pamahaw ug mga kinahanglanon sa balay — tanan naa sa usa ka puliki pero pamilyar nga lugar.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#pag-adto">Tan-awa ang agianan <span aria-hidden="true">↘</span></a>
+          <a class="quiet-link" href={market.mapUrl} target="_blank" rel="noreferrer">Ablihi sa Google Maps <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <aside class="hero-fact">
+        <span class="stamp">Lokál nga giya</span>
+        <p><strong>{market.rating} / 5</strong><br /><span>Gipakita sa Google Maps · {market.reviewCount.toLocaleString("en-US")} ka review</span></p>
+        <p><strong>Hangtod {market.closingTime}</strong><br /><span>Ang gipakita nga closing time sa map; i-check una sa pagbiyahe.</span></p>
+      </aside>
+    </section>
+
+    <section class="market-pulse" aria-label="Mga paspas nga pahinumdom">
+      <p><span>01</span> Ang buntag para sa presko nga paliton ug pamahaw.</p>
+      <p><span>02</span> Ang suki nga tindahan mahimong lain-lain ang oras.</p>
+      <p><span>03</span> Dad-a ang gagmay nga kuwarta ug reusable nga bag.</p>
+    </section>
+
+    <section id="paliton" class="section section-shopping" aria-labelledby="shopping-title">
+      <div class="section-rail"><span>01</span><p>Unsa ang pangitaon</p></div>
+      <div class="section-heading">
+        <p class="eyebrow">Mga panginahanglan sa adlaw</p>
+        <h2 id="shopping-title">Dili lang supermarket.<br />Kini ang <em>hunonganan sa adlaw.</em></h2>
+      </div>
+      <div class="shopping-spread">
+        <figure class="photo-tall">
+          <img src={assets.produceDisplay} alt="Tinuod nga display sa kolorful nga prutas ug utanon sa merkado" loading="lazy" />
+          <figcaption>Mga panimpla, prutas ug gulay: pangita-a ang anang naa sa panahon.</figcaption>
+        </figure>
+        <div class="category-list">
+          <article><span>01</span><h3>Preskong ani</h3><p>Gulay, prutas, humot nga herbs ug mga pang-sabaw nga dali mapili para sa panimalay.</p></article>
+          <article><span>02</span><h3>Isda ug seafood</h3><p>Ang wet market para sa isda, kabibe ug uban pang halin gikan sa baybayon; pili ug tan-awa ang presko nga display.</p></article>
+          <article><span>03</span><h3>Panimalay ug adlaw-adlaw</h3><p>Gikan pamahaw hangtod mga gamiton sa kusina, ang merkado usa ka practical nga stop sa ordinaryong adlaw.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="food-band" aria-labelledby="food-title" style={`background-image: linear-gradient(90deg, rgba(74, 26, 14, .96), rgba(74, 26, 14, .76)), url('${assets.historic}')`}>
+      <img class="food-stamp" src={assets.stamp} alt="" aria-hidden="true" />
+      <div>
+        <p class="eyebrow eyebrow-light">Kaon duol sa merkado</p>
+        <h2 id="food-title">Sikwate, puto maya,<br />ug usa ka <em>hinay nga buntag.</em></h2>
+      </div>
+      <p class="food-copy">Ang Cogon nailhan sa sayong pamahaw nga sikwate ug puto maya, ug sa mga lutong-balay nga mahurot usahay samtang sayo pa. Pangitaa ang bukas nga tindahan ug pangutan-a ang suki unsay bag-o karong adlawa.</p>
+      <a class="button button-outline" href="#mapa">Tan-awa ang lokasyon <span aria-hidden="true">↘</span></a>
+    </section>
+
+    <section id="pag-adto" class="section directions" aria-labelledby="directions-title">
+      <div class="section-rail"><span>02</span><p>Pag-abot ug paglihok</p></div>
+      <div class="directions-intro">
+        <p class="eyebrow">Praktikal nga ruta</p>
+        <h2 id="directions-title">Sa merkado, ang pinakamaayong plano kay ang <em>klaro nga sunod nga lakang.</em></h2>
+      </div>
+      <div class="route-grid">
+        <article class="route-card"><span class="route-icon">✈</span><h3>Gikan sa airport</h3><p>Gikan sa Laguindingan Airport, sakay una paingon sa downtown hubs sama sa Centrio, Limketkai, Gaisano City, SM CDO Downtown o Divisoria. Human ana, gamita ang map para sa katapusang sakay o lakaw pa-Cogon.</p><small>Hatagi ug igo nga oras ang biyahe, labi na kung traffic o ulan.</small></article>
+        <article class="route-card"><span class="route-icon">▣</span><h3>Jeepney ug bus</h3><p>Ang jeepney, multicab ug motorela kasagarang gamit sa siyudad. Pangitaa ang rutang moagi sa downtown/Cogon ug tan-awa ang sign sa sakyanan; kung nagdali, pangutan-a ang drayber o konduktor una mosakay.</p><small>Likayi ang pagsalig sa usa ka fixed nga ruta tungod kay mausab ang serbisyo.</small></article>
+        <article class="route-card"><span class="route-icon">↗</span><h3>Taxi o ride-hail</h3><p>Para sa diretso nga drop-off, taxi o ride-hail ang labing sayon. Isulti ang “Cogon Public Market, Mayor J. R. Borja Avenue,” ug gamita ang live map kung moabot na duol sa merkado.</p><small>Mas sayon ang pagkuha ug sakyanan sayo pa kaysa human sa peak time.</small></article>
+      </div>
+    </section>
+
+    <section class="visit-strip" aria-label="Mga tip sa pagbisita">
+      <article><p class="eyebrow">Bayad / gasto</p><h3>Walay gi-anunsyo nga entrance fee</h3><p>Ang gasto depende sa imong paliton ug sakay. Dad-a ug cash para sa gagmay nga transaksiyon ug pangutana sa presyo sa dili pa mopili.</p></article>
+      <article><p class="eyebrow">Parking</p><h3>Planoha daan ang drop-off</h3><p>Ang market area mahimong busy. I-check ang live map ug traffic sa adlaw nga mobisita; sundon ang lokal nga parking ug loading rules.</p></article>
+      <article><p class="eyebrow">Pinakamaayo nga oras</p><h3>Sayong buntag, 60–120 minutos</h3><p>Mas daghan ang presko nga pili-on sa buntag. Hatagi ug panahon ang paglibot, pamahaw ug pag-obserba sa merkado.</p></article>
+    </section>
+
+    <section id="mapa" class="map-section" aria-labelledby="map-title">
+      <div class="map-copy">
+        <p class="eyebrow">Asa kini makit-an</p>
+        <h2 id="map-title">Mayor J. R. Borja Avenue,<br /><em>Cagayan de Oro</em></h2>
+        <address>{market.address.streetAddress}<br />{market.address.addressLocality}, {market.address.addressRegion}<br />Philippines</address>
+        <a class="button button-dark" href={market.mapUrl} target="_blank" rel="noreferrer">Kuhaa ang direksyon <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="map-frame">
+        <iframe title="Mapa sa Cogon Public Market" src={market.mapEmbedUrl} loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section id="duol" class="section nearby" aria-labelledby="nearby-title">
+      <div class="section-rail"><span>03</span><p>Human sa pamalit</p></div>
+      <div class="section-heading"><p class="eyebrow">Mga lugar nga duol</p><h2 id="nearby-title">Himoa ang adlaw nga mas <em>lapad kaysa shopping list.</em></h2></div>
+      <div class="nearby-cards">
+        <article><span>01</span><h3>Gaston Park ug Cathedral</h3><p>Kung human na ka sa merkado, padulong sa downtown para sa park ug sa Saint Augustine Metropolitan Cathedral. Maayo ni nga sunod nga stop para sa mas hinay nga paglibot.</p></article>
+        <article><span>02</span><h3>SM CDO Downtown</h3><p>Kung kinahanglan nimo ug mall services, naa ang SM CDO Downtown sa duol nga urban area. I-check ang map kay magdepende ang actual nga agianan sa imong transportasyon.</p></article>
+        <article><span>03</span><h3>Cogon Night Market</h3><p>Kung magpabilin ka hangtod gabii, pangitaa ang mga aktibong food ug market area sa palibot. Ang kahimtang ug oras mahimong mausab, busa tan-awa una ang live map.</p></article>
+      </div>
+    </section>
+
+    <section class="faq-section" aria-labelledby="faq-title">
+      <div class="faq-title-wrap"><p class="eyebrow">Pangutana ug tubag</p><h2 id="faq-title">Paspas nga <em>klaro.</em></h2></div>
+      <div class="faq-list">
+        <details open><summary>Unsa ang address sa Cogon Public Market?</summary><p>Naa kini sa Mayor J. R. Borja Avenue, Cagayan de Oro City, Misamis Oriental. Gamita ang Google Maps para sa pinakasayon nga turn-by-turn nga direksyon.</p></details>
+        <details><summary>Unsa ang oras sa merkado?</summary><p>Ang page sa Google Maps nagpakita ug closing time nga 18:30 sa dihang gi-check ang impormasyon. Mahimong mausab ang oras, mao nga i-confirm sa map sa dili pa molakaw.</p></details>
+        <details><summary>Naa bay parking?</summary><p>Ang street ug market access mahimong busy. Tan-awa ang live traffic ug parking instructions sa adlaw nga mobisita, o pili ug taxi/drop-off kung mas sayon.</p></details>
+        <details><summary>Unsaon paghatag ug correction?</summary><p>Gamiton ang feedback block sa ubos ug ipadala ang sayop nga impormasyon, asa kini makita, ug ang imong source kung naa.</p></details>
+      </div>
+    </section>
+
+    <section id="feedback" class="feedback" aria-labelledby="feedback-title">
+      <div class="feedback-copy"><span class="stamp stamp-large">Ipaayo ang giya</span><h2 id="feedback-title">Nakita ang sayop?<br /><em>Isulti namo.</em></h2><p>Kini nga site dili opisyal nga channel sa merkado. Kung naay sayop nga address, oras, transport, o impormasyon sa panid, ipadala ang detalye aron ma-review ug matul-id.</p></div>
+      <div class="feedback-card">
+        <p class="eyebrow">Error feedback</p>
+        <h3>Usa ka sayop, mas klaro nga giya.</h3>
+        <p>Isulat unsa ang sayop, asa nimo kini nakita, ug unsa ang sakto nga impormasyon.</p>
+        <a class="button button-dark" href={feedbackHref}>Ipadala ang correction <span aria-hidden="true">↗</span></a>
+        <a class="email-link" href={`mailto:${market.feedbackEmail}`}>{market.feedbackEmail}</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="brand brand-footer"><img src={assets.logo} width="40" height="40" alt="" /><span><strong>Cogon</strong><em>Public Market</em></span></div>
+    <p>Dili opisyal nga website sa Cogon Public Market. Ang impormasyon para sa lokal nga paggiya lamang; palihog i-check ang live nga map ug mga tindahan sa dili pa mobisita.</p>
+    <p class="photo-credit">Mga hulagway: <a href="https://xudevcomblog.wordpress.com/2017/10/19/a-perspective-and-retrospective-cogon-market/" target="_blank" rel="noreferrer">Xavier University Development Communication</a>. Ang real Cogon Market photos online references lamang; i-replace ug owned/licensed assets sa dili pa i-publish sa publikong domain.</p>
+  </footer>
+</Base>
