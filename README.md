@@ -34,4 +34,4 @@ pnpm deploy
 
 ## Asset note
 
-The layout references uploaded real-market photos and generated brand assets by their project storage paths. The research notes preserve the source context. Replace non-owned visual material with licensed or owned images before public deployment where needed.
+The layout references uploaded real-market photos and generated brand assets by their project storage paths. The research notes preserve the source context. Image copyrights remain with their photographers.
