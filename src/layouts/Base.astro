@@ -5,7 +5,7 @@
  * keep type warm, direct, accessible and never generic or neon.
  */
 import "../styles/global.css";
-import { assets } from "../content/site";
+import { assets, siteName } from "../content/site";
 
 interface Props {
   title: string;
@@ -35,6 +35,7 @@ const shareImage = Astro.site ? new URL(assets.produceDisplay, Astro.site).href 
     {pageUrl && <link rel="canonical" href={pageUrl} />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ceb_PH" />
+    <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {pageUrl && <meta property="og:url" content={pageUrl} />}

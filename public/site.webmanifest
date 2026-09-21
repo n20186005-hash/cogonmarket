@@ -1,6 +1,6 @@
 {
-  "name": "Cogon Public Market",
-  "short_name": "Cogon",
+  "name": "Cogon Public Market Cagayan de Oro — Travel Guide",
+  "short_name": "Cogon Market",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "/favicon-16.png", "sizes": "16x16", "type": "image/png" },

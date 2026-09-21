@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
 const configuredSite = process.env.SITE_URL?.trim();
-const site = configuredSite && /^https?:\/\//.test(configuredSite) ? configuredSite : undefined;
+const site = configuredSite && /^https?:\/\//.test(configuredSite) ? configuredSite : "https://cogonmarket.com";
 
 export default defineConfig({
   site,

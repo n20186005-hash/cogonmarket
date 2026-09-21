@@ -16,11 +16,40 @@ export const market = {
   rating: "3.8",
   reviewCount: 6324,
   businessHours: "04:30–18:30",
+  openingHoursSpecification: {
+    dayOfWeek: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    opens: "04:30",
+    closes: "18:30"
+  },
   feedbackEmail: "claritleonelmnicol@gmail.com",
   mapUrl: "https://www.google.com/maps/place/Cogon+Public+Market/data=!4m7!3m6!1s0x32fff2d03e021631:0xbb1fd9c6cf6f9de!8m2!3d8.4773674!4d124.6514096!16s%2Fg%2F1tdw5l54!19sChIJMRYCPtDy_zIR3vn2bJz9sQs",
   mapEmbedUrl:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6818.544584177149!2d124.6514096!3d8.4773674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32fff2d03e021631%3A0xbb1fd9c6cf6f9de!2sCogon%20Public%20Market!5e1!3m2!1sceb!2sPH!4v1786947978557!5m2!1sceb!2sPH"
 } as const;
+
+// SEO site name follows the convention: 景点名称 + 城市 + 旅游指南
+// (Attraction Name + City + Travel Guide)
+export const siteName = "Cogon Public Market Cagayan de Oro — Travel Guide";
+
+export const metaDescription =
+  "Complete guide to Cogon Public Market & Night Market in Cagayan de Oro (CDO). " +
+  "Explore street food (Puto Maya, Sikwate), fresh produce, opening hours, and local shopping tips.";
+
+// Outbound authority / E-E-A-T references (official and verifiable sources).
+export const authorityLinks = [
+  {
+    label: "Cagayan de Oro City Government",
+    href: "https://www.cagayandeoro.gov.ph/"
+  }
+] as const;
 
 export const assets = {
   logo: "/favicon.svg",

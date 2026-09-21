@@ -5,7 +5,7 @@
  * Use the left information rail, hand-stamp symbols and terracotta sparingly.
  */
 import Base from "../layouts/Base.astro";
-import { assets, market } from "../content/site";
+import { assets, market, siteName, metaDescription, authorityLinks } from "../content/site";
 
 const siteUrl = Astro.site?.toString();
 const schemaId = siteUrl ? new URL("#cogon-public-market", siteUrl).href : "#cogon-public-market";
@@ -31,7 +31,11 @@ const localBusinessSchema = {
     ratingValue: market.rating,
     reviewCount: market.reviewCount
   },
-  openingHours: `Ang oras sa merkado mao ang ${market.businessHours}; palihog i-check ang Google Maps sa dili pa mobiyahe.`
+  hasMap: market.mapUrl,
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    ...market.openingHoursSpecification
+  }
 };
 
 const faqSchema = {
@@ -68,7 +72,7 @@ const faqSchema = {
 const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponent("Correction for Cogon Public Market guide")}&body=${encodeURIComponent("Unsay sayop nga impormasyon?\n\nAsa sa panid makita?\n\nUnsa ang sakto o imong source?\n\nSalamat.")}`;
 ---
 
-<Base title="Cogon Public Market — Sugod sa adlaw, presko ang pili" description="Usa ka praktikal nga Cebuano nga giya sa Cogon Public Market sa Cagayan de Oro: paliton, kaonon, agianan ug impormasyon sa pagbisita.">
+<Base title={siteName} description={metaDescription}>
   <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)}></script>
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
 
@@ -208,5 +212,12 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
     <div class="brand brand-footer"><img src={assets.logo} width="40" height="40" alt="" /><span><strong>Cogon</strong><em>Public Market</em></span></div>
     <p>Dili opisyal nga website sa Cogon Public Market. Ang impormasyon para sa lokal nga paggiya lamang; palihog i-check ang live nga map ug mga tindahan sa dili pa mobisita.</p>
     <p class="photo-credit">Mga hulagway: <a href="https://xudevcomblog.wordpress.com/2017/10/19/a-perspective-and-retrospective-cogon-market/" target="_blank" rel="noreferrer">Xavier University Development Communication</a>. Ang copyright sa mga hulagway iya sa tagsa-tagsa ka photographer.</p>
+    <nav class="footer-links" aria-label="Mga opisyal ug awtorisadong sumpay">
+      <p class="footer-heading">Mga sumpay</p>
+      <a href={market.mapUrl} target="_blank" rel="noopener noreferrer">Cogon Public Market — Google Maps</a>
+      {authorityLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+      ))}
+    </nav>
   </footer>
 </Base>
