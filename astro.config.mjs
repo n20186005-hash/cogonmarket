@@ -7,7 +7,7 @@ const site = configuredSite && /^https?:\/\//.test(configuredSite) ? configuredS
 
 export default defineConfig({
   site,
-  integrations: site ? [sitemap()] : [],
+  integrations: site ? [sitemap({ filter: (page) => !page.endsWith("/404/") })] : [],
   vite: {
     plugins: [tailwindcss()],
     server: {
