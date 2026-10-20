@@ -5,68 +5,34 @@
  * Use the left information rail, hand-stamp symbols and terracotta sparingly.
  */
 import Base from "../layouts/Base.astro";
-import { assets, market, siteName, metaDescription, authorityLinks } from "../content/site";
+import { assets, market, siteName, metaDescription, authorityLinks, faqs, nightMarketAdvisory } from "../content/site";
 
 const siteUrl = Astro.site?.toString();
 const schemaId = siteUrl ? new URL("#cogon-public-market", siteUrl).href : "#cogon-public-market";
 const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "TouristAttraction"],
+  "@type": "TouristAttraction",
   "@id": schemaId,
   name: market.name,
   description: "Usa ka lokal nga public market ug adlaw-adlaw nga shopping point sa Cagayan de Oro.",
   url: siteUrl,
-  telephone: market.telephone,
   address: {
     "@type": "PostalAddress",
-    ...market.address
+    addressLocality: market.address.addressLocality,
+    addressRegion: market.address.addressRegion,
+    addressCountry: market.address.addressCountry
   },
   geo: {
     "@type": "GeoCoordinates",
     latitude: market.coordinates.latitude,
     longitude: market.coordinates.longitude
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: market.rating,
-    reviewCount: market.reviewCount
-  },
-  hasMap: market.mapUrl,
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    ...market.openingHoursSpecification
-  }
+  hasMap: market.mapUrl
 };
 
 const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "Unsaon pag-adto sa Cogon Public Market?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Naa kini sa Mayor J. R. Borja Avenue sa Cagayan de Oro. Gamit ug Google Maps para sa pinakabag-ong ruta; duol kini sa downtown ug madangpan sa taxi, jeepney, multicab ug motorela depende sa imong giikanan."
-      }
-    },
-    {
-      "@type": "Question",
-      name: "Kanus-a ang maayo nga oras sa pagbisita?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Sayong buntag angay para sa presko nga ani, isda ug pamahaw. Tan-awa ang live nga oras sa Google Maps sa dili pa mobiyahe tungod kay mahimong mausab ang oras sa mga tindahan."
-      }
-    },
-    {
-      "@type": "Question",
-      name: "Asa ko maka-report ug sayop nga impormasyon?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "I-email ang detalye sa claritleonelmnicol@gmail.com aron ma-review ang report."
-      }
-    }
-  ]
+  "@context": "https://schema.org", "@type": "FAQPage",
+  mainEntity: faqs.map(({q,a}) => ({"@type":"Question", name:q, acceptedAnswer:{"@type":"Answer",text:a}}))
 };
 
 const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponent("Correction for Cogon Public Market guide")}&body=${encodeURIComponent("Unsay sayop nga impormasyon?\n\nAsa sa panid makita?\n\nUnsa ang sakto o imong source?\n\nSalamat.")}`;
@@ -96,7 +62,7 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
       <div class="hero-rail" aria-hidden="true"><span>08° 28' N</span><i></i><span>124° 39' E</span></div>
       <div class="hero-copy">
         <p class="eyebrow">Cagayan de Oro · adlaw-adlaw nga merkado</p>
-        <h1 id="hero-title">Sugod sayo.<br /><em>Pili ug presko.</em></h1>
+        <h1 id="hero-title">Cogon Public Market<br /><em>Cagayan de Oro.</em></h1>
         <p class="hero-intro">Sa Cogon, ang adlaw magsugod sa tingog sa merkado: prutas, isda, pamahaw ug mga kinahanglanon sa balay — tanan naa sa usa ka puliki pero pamilyar nga lugar.</p>
         <div class="hero-actions">
           <a class="button button-light" href="#pag-adto">Tan-awa ang agianan <span aria-hidden="true">↘</span></a>
@@ -105,8 +71,8 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
       </div>
       <aside class="hero-fact">
         <span class="stamp">Lokál nga giya</span>
-        <p><strong>{market.rating} / 5</strong><br /><span>Gipakita sa Google Maps · {market.reviewCount.toLocaleString("en-US")} ka review</span></p>
-        <p><strong>Oras {market.businessHours}</strong><br /><span>Ang oras nga gipakita sa map; i-check una sa pagbiyahe.</span></p>
+        <p><strong>{market.rating} / 5</strong><br /><span>Google Maps · {market.reviewCount.toLocaleString("en-US")} ka review · 19 Oktubre 2026</span></p>
+        <p><strong>Oras {market.businessHours}</strong><br /><span>Public-market listing: 19 Oktubre 2026. Lahi ang oras sa mga stall ug night-market street. Ang rating kay third party, dili review nga gikolekta sa giya.</span></p>
       </aside>
     </section>
 
@@ -154,12 +120,12 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
       <div class="route-grid">
         <article class="route-card"><span class="route-icon">✈</span><h3>Gikan sa airport</h3><p>Gikan sa Laguindingan Airport, sakay una paingon sa downtown hubs sama sa Centrio, Limketkai, Gaisano City, SM CDO Downtown o Divisoria. Human ana, gamita ang map para sa katapusang sakay o lakaw pa-Cogon.</p><small>Hatagi ug igo nga oras ang biyahe, labi na kung traffic o ulan.</small></article>
         <article class="route-card"><span class="route-icon">▣</span><h3>Jeepney ug bus</h3><p>Ang jeepney, multicab ug motorela kasagarang gamit sa siyudad. Pangitaa ang rutang moagi sa downtown/Cogon ug tan-awa ang sign sa sakyanan; kung nagdali, pangutan-a ang drayber o konduktor una mosakay.</p><small>Likayi ang pagsalig sa usa ka fixed nga ruta tungod kay mausab ang serbisyo.</small></article>
-        <article class="route-card"><span class="route-icon">↗</span><h3>Taxi o ride-hail</h3><p>Para sa diretso nga drop-off, taxi o ride-hail ang labing sayon. Isulti ang “Cogon Public Market, Mayor J. R. Borja Avenue,” ug gamita ang live map kung moabot na duol sa merkado.</p><small>Mas sayon ang pagkuha ug sakyanan sayo pa kaysa human sa peak time.</small></article>
+        <article class="route-card"><span class="route-icon">↗</span><h3>Taxi o ride-hail</h3><p>Para sa diretso nga drop-off, taxi o ride-hail ang labing sayon. Isulti ang “Cogon Public Market, Cagayan de Oro,” ug gamita ang live map kung moabot na duol sa merkado.</p><small>Mas sayon ang pagkuha ug sakyanan sayo pa kaysa human sa peak time.</small></article>
       </div>
     </section>
 
     <section class="visit-strip" aria-label="Mga tip sa pagbisita">
-      <article><p class="eyebrow">Bayad / gasto</p><h3>Walay gi-anunsyo nga entrance fee</h3><p>Ang gasto depende sa imong paliton ug sakay. Dad-a ug cash para sa gagmay nga transaksiyon ug pangutana sa presyo sa dili pa mopili.</p></article>
+      <article><p class="eyebrow">Bayad / gasto</p><h3>Pangutana sa presyo ug singil</h3><p>Walay kasamtangang admission policy nga beripikado dinhi. Ang gasto depende sa imong paliton, sakay ug serbisyo. Pangutana sa timbang, quantity ug total nga presyo sa dili pa mobayad.</p></article>
       <article><p class="eyebrow">Parking</p><h3>Planoha daan ang drop-off</h3><p>Ang market area mahimong busy. I-check ang live map ug traffic sa adlaw nga mobisita; sundon ang lokal nga parking ug loading rules.</p></article>
       <article><p class="eyebrow">Pinakamaayo nga oras</p><h3>Sayong buntag, 60–120 minutos</h3><p>Mas daghan ang presko nga pili-on sa buntag. Hatagi ug panahon ang paglibot, pamahaw ug pag-obserba sa merkado.</p></article>
     </section>
@@ -167,7 +133,7 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
     <section id="mapa" class="map-section" aria-labelledby="map-title">
       <div class="map-copy">
         <p class="eyebrow">Asa kini makit-an</p>
-        <h2 id="map-title">Mayor J. R. Borja Avenue,<br /><em>Cagayan de Oro</em></h2>
+        <h2 id="map-title">Cogon Public Market,<br /><em>Cagayan de Oro</em></h2>
         <address>{market.address.streetAddress}<br />{market.address.addressLocality}, {market.address.addressRegion}<br />Philippines</address>
         <a class="button button-dark" href={market.mapUrl} target="_blank" rel="noreferrer">Kuhaa ang direksyon <span aria-hidden="true">↗</span></a>
       </div>
@@ -182,17 +148,14 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
       <div class="nearby-cards">
         <article><span>01</span><h3>Gaston Park ug Cathedral</h3><p>Kung human na ka sa merkado, padulong sa downtown para sa park ug sa Saint Augustine Metropolitan Cathedral. Maayo ni nga sunod nga stop para sa mas hinay nga paglibot.</p></article>
         <article><span>02</span><h3>SM CDO Downtown</h3><p>Kung kinahanglan nimo ug mall services, naa ang SM CDO Downtown sa duol nga urban area. I-check ang map kay magdepende ang actual nga agianan sa imong transportasyon.</p></article>
-        <article><span>03</span><h3>Cogon Night Market</h3><p>Kung magpabilin ka hangtod gabii, pangitaa ang mga aktibong food ug market area sa palibot. Ang kahimtang ug oras mahimong mausab, busa tan-awa una ang live map.</p></article>
+        <article><span>03</span><h3>Night-market advisory</h3><p>Ang city advisory sa 16 Hunyo 2026 nag-anunsyo ug temporaryong suspensyon sa night market sa Osmeña ug Justo Ramonal Streets sugod 22 Hunyo hangtod bag-ong pahibalo. Lahi kini sa daytime public market. Wala pay reopening notice nga beripikado sa giya sa 19 Oktubre 2026.</p><a href={nightMarketAdvisory}>Basaha ang city advisory ug i-check ang bag-ong pahibalo</a></article>
       </div>
     </section>
 
     <section class="faq-section" aria-labelledby="faq-title">
       <div class="faq-title-wrap"><p class="eyebrow">Pangutana ug tubag</p><h2 id="faq-title">Paspas nga <em>klaro.</em></h2></div>
       <div class="faq-list">
-        <details open><summary>Unsa ang address sa Cogon Public Market?</summary><p>Naa kini sa Mayor J. R. Borja Avenue, Cagayan de Oro City, Misamis Oriental. Gamita ang Google Maps para sa pinakasayon nga turn-by-turn nga direksyon.</p></details>
-        <details><summary>Unsa ang oras sa merkado?</summary><p>Ang page sa Google Maps nagpakita ug oras nga {market.businessHours} sa dihang gi-check ang impormasyon. Mahimong mausab ang oras, mao nga i-confirm sa map sa dili pa molakaw.</p></details>
-        <details><summary>Naa bay parking?</summary><p>Ang street ug market access mahimong busy. Tan-awa ang live traffic ug parking instructions sa adlaw nga mobisita, o pili ug taxi/drop-off kung mas sayon.</p></details>
-        <details><summary>Unsaon paghatag ug correction?</summary><p>Gamiton ang feedback block sa ubos ug ipadala ang sayop nga impormasyon, asa kini makita, ug ang imong source kung naa.</p></details>
+        {faqs.map(({q,a}) => <details><summary>{q}</summary><p>{a}</p></details>)}
       </div>
     </section>
 
@@ -211,9 +174,11 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
   <footer class="site-footer">
     <div class="brand brand-footer"><img src={assets.logo} width="40" height="40" alt="" /><span><strong>Cogon</strong><em>Public Market</em></span></div>
     <p>Dili opisyal nga website sa Cogon Public Market. Ang impormasyon para sa lokal nga paggiya lamang; palihog i-check ang live nga map ug mga tindahan sa dili pa mobisita.</p>
+    <p>Privacy: Kini nga panid nag-load ug Google Analytics, Google Maps ug Google Fonts. Mahimong moproseso ang Google ug datos sa browser, pagbisita ug cookies sumala sa <a href="https://policies.google.com/privacy">iyang privacy policy</a>. Gamita ang browser privacy controls para sa cookies. Boluntaryo ang correction email; ayaw ipadala ang sensitibong impormasyon.</p>
     <p class="photo-credit">Mga hulagway: <a href="https://xudevcomblog.wordpress.com/2017/10/19/a-perspective-and-retrospective-cogon-market/" target="_blank" rel="noreferrer">Xavier University Development Communication</a>. Ang copyright sa mga hulagway iya sa tagsa-tagsa ka photographer.</p>
     <nav class="footer-links" aria-label="Mga opisyal ug awtorisadong sumpay">
-      <p class="footer-heading">Mga sumpay</p>
+      <p class="footer-heading">Mga sumpay · gi-check 19 Oktubre 2026</p>
+      <a href={nightMarketAdvisory}>City advisory sa night-market street (16 Hunyo 2026)</a>
       <a href={market.mapUrl} target="_blank" rel="noopener noreferrer">Cogon Public Market — Google Maps</a>
       {authorityLinks.map((link) => (
         <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
