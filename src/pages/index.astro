@@ -5,6 +5,7 @@
  * Use the left information rail, hand-stamp symbols and terracotta sparingly.
  */
 import Base from "../layouts/Base.astro";
+import TopicLinks from "../components/TopicLinks.astro";
 import { assets, market, siteName, metaDescription, authorityLinks, faqs, nightMarketAdvisory } from "../content/site";
 
 const siteUrl = Astro.site?.toString();
@@ -151,6 +152,8 @@ const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponen
         <article><span>03</span><h3>Night-market advisory</h3><p>Ang city advisory sa 16 Hunyo 2026 nag-anunsyo ug temporaryong suspensyon sa night market sa Osmeña ug Justo Ramonal Streets sugod 22 Hunyo hangtod bag-ong pahibalo. Lahi kini sa daytime public market. Wala pay reopening notice nga beripikado sa giya sa 19 Oktubre 2026.</p><a href={nightMarketAdvisory}>Basaha ang city advisory ug i-check ang bag-ong pahibalo</a></article>
       </div>
     </section>
+
+    <TopicLinks />
 
     <section class="faq-section" aria-labelledby="faq-title">
       <div class="faq-title-wrap"><p class="eyebrow">Pangutana ug tubag</p><h2 id="faq-title">Paspas nga <em>klaro.</em></h2></div>

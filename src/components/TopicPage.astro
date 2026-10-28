@@ -1,0 +1,106 @@
+---
+import Base from "../layouts/Base.astro";
+import { assets, market, siteName, authorityLinks, nightMarketAdvisory } from "../content/site";
+import { PILLAR_LABEL, relatedTopics, type TopicContent } from "../content/topics";
+
+interface Props {
+  topic: TopicContent;
+}
+const { topic } = Astro.props;
+const pillarLabel = PILLAR_LABEL[topic.pillar];
+const related = relatedTopics(topic.related);
+const feedbackHref = `mailto:${market.feedbackEmail}?subject=${encodeURIComponent("Correction for Cogon Public Market guide")}&body=${encodeURIComponent("Unsay sayop nga impormasyon?\n\nAsa sa panid makita?\n\nUnsa ang sakto o imong source?\n\nSalamat.")}`;
+---
+<Base title={topic.metaTitle} description={topic.metaDescription}>
+  <a class="skip-link" href="#main-content">Laktawi ngadto sa sulod</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Cogon Public Market — sugod sa taas">
+      <img src={assets.logo} width="58" height="58" alt="Cogon Public Market basket-and-sun mark" />
+      <span><strong>Cogon</strong><em>Public Market</em></span>
+    </a>
+    <nav aria-label="Pangunang nabigasyon">
+      <a href="/#paliton">Paliton</a>
+      <a href="/#pag-adto">Pag-adto</a>
+      <a href="/#duol">Duol</a>
+      <a class="nav-stamp" href="/#feedback">Reporta ug sayop</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Sugod</a><span aria-hidden="true">/</span><span>{pillarLabel}</span><span aria-hidden="true">/</span><span aria-current="page">{topic.h1}</span>
+    </nav>
+
+    <section class="topic-hero" aria-labelledby="topic-title">
+      <p class="eyebrow">{pillarLabel}</p>
+      <h1 id="topic-title">{topic.h1}</h1>
+      <p class="topic-lead">{topic.lead}</p>
+      {topic.facts && topic.facts.length > 0 && (
+        <dl class="topic-facts">
+          {topic.facts.map((f) => (
+            <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+          ))}
+        </dl>
+      )}
+    </section>
+
+    {topic.blocks.map((block) => (
+      <section class="topic-block" aria-labelledby={undefined}>
+        <div class="topic-block-inner">
+          <h2>{block.heading}</h2>
+          {block.paragraphs && block.paragraphs.map((p) => <p>{p}</p>)}
+          {block.bullets && (
+            <ul>
+              {block.bullets.map((b) => <li>{b}</li>)}
+            </ul>
+          )}
+          {block.callout && <p class="topic-callout">{block.callout}</p>}
+        </div>
+      </section>
+    ))}
+
+    <section class="faq-section" aria-labelledby="topic-faq-title">
+      <div class="faq-title-wrap"><p class="eyebrow">Pangutana ug tubag</p><h2 id="topic-faq-title">Paspas nga <em>klaro.</em></h2></div>
+      <div class="faq-list">
+        {topic.faqs.map(({q,a}) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="section nearby" aria-labelledby="related-title">
+        <div class="section-rail"><span>→</span><p>Uban pang giya</p></div>
+        <div class="section-heading"><p class="eyebrow">Padayon nga paglibot</p><h2 id="related-title">Kini nga mga <em>panid</em> makatabang.</h2></div>
+        <div class="nearby-cards">
+          {related.map((r) => (
+            <article><span>{PILLAR_LABEL[r.pillar].charAt(0)}</span><h3><a href={`/${r.slug}`}>{r.h1}</a></h3><p>{r.lead}</p></article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section id="feedback" class="feedback" aria-labelledby="feedback-title">
+      <div class="feedback-copy"><span class="stamp stamp-large">Ipaayo ang giya</span><h2 id="feedback-title">Nakita ang sayop?<br /><em>Isulti namo.</em></h2><p>Kini nga site dili opisyal nga channel sa merkado. Kung naay sayop nga impormasyon, ipadala aron ma-review ug matul-id.</p></div>
+      <div class="feedback-card">
+        <p class="eyebrow">Error feedback</p>
+        <h3>Usa ka sayop, mas klaro nga giya.</h3>
+        <p>Isulat unsa ang sayop, asa nimo kini nakita, ug unsa ang sakto nga impormasyon.</p>
+        <a class="button button-dark" href={feedbackHref}>Ipadala ang correction <span aria-hidden="true">↗</span></a>
+        <a class="email-link" href={`mailto:${market.feedbackEmail}`}>{market.feedbackEmail}</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="brand brand-footer"><img src={assets.logo} width="40" height="40" alt="" /><span><strong>Cogon</strong><em>Public Market</em></span></div>
+    <p>Dili opisyal nga website sa Cogon Public Market. Ang impormasyon para sa lokal nga paggiya lamang; palihog i-check ang live nga map ug mga tindahan sa dili pa mobisita.</p>
+    <p>Privacy: Kini nga panid nag-load ug Google Analytics, Google Maps ug Google Fonts. Mahimong moproseso ang Google ug datos sa browser, pagbisita ug cookies sumala sa <a href="https://policies.google.com/privacy">iyang privacy policy</a>. Gamita ang browser privacy controls para sa cookies. Boluntaryo ang correction email; ayaw ipadala ang sensitibong impormasyon.</p>
+    <nav class="footer-links" aria-label="Mga opisyal ug awtorisadong sumpay">
+      <p class="footer-heading">Mga sumpay · gi-check 19 Oktubre 2026</p>
+      <a href={nightMarketAdvisory}>City advisory sa night-market street (16 Hunyo 2026)</a>
+      <a href={market.mapUrl} target="_blank" rel="noopener noreferrer">Cogon Public Market — Google Maps</a>
+      {authorityLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+      ))}
+    </nav>
+  </footer>
+</Base>

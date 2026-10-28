@@ -1,0 +1,47 @@
+---
+import TopicPage from "../components/TopicPage.astro";
+import { TOPICS, type TopicContent } from "../content/topics";
+
+export const dynamicParams = false;
+
+export function getStaticPaths() {
+  return TOPICS.map((topic) => ({ params: { topic: topic.slug }, props: { topic } }));
+}
+
+const { topic } = Astro.props as { topic: TopicContent };
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, "");
+const pageUrl = siteUrl ? `${siteUrl}/${topic.slug}` : `https://cogonmarket.com/${topic.slug}`;
+const schemaId = siteUrl ? new URL("#cogon-public-market", siteUrl).href : "#cogon-public-market";
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: topic.h1,
+  description: topic.metaDescription,
+  inLanguage: "ceb",
+  about: { "@type": "TouristAttraction", "@id": schemaId },
+  isPartOf: { "@type": "WebSite", "@id": `${siteUrl ?? "https://cogonmarket.com"}/#website` }
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Cogon Public Market", item: siteUrl ?? "https://cogonmarket.com" },
+    { "@type": "ListItem", position: 2, name: topic.h1, item: pageUrl }
+  ]
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: topic.faqs.map(({q,a}) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } }))
+};
+---
+<TopicPage topic={topic} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(webPageSchema)}></script>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>

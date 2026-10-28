@@ -1,0 +1,21 @@
+---
+import { TOPICS, PILLAR_LABEL, type Pillar } from "../content/topics";
+
+const pillars: Pillar[] = ["core", "eat", "play", "plan"];
+const grouped = pillars.map((p) => ({ pillar: p, label: PILLAR_LABEL[p], items: TOPICS.filter((t) => t.pillar === p) }));
+---
+<section id="giya" class="topic-links" aria-labelledby="topic-links-title">
+  <div class="section-heading"><p class="eyebrow">Mga giya sa Cogon</p><h2 id="topic-links-title">30+ ka <em>giya sa pagbisita.</em></h2></div>
+  <div class="topic-links-grid">
+    {grouped.map((g) => (
+      <div class="topic-links-col">
+        <h3>{g.label}</h3>
+        <ul>
+          {g.items.map((t) => (
+            <li><a href={`/${t.slug}`}>{t.h1}</a></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
